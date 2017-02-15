@@ -1,8 +1,9 @@
-var helper = require('./ip');
-var data = helper.getpackage('10.16.189.1/20','25/1/2016',1);
-//helper.getIp(data);
-var use = helper.getIp('10.16.0.1', '10.13.23.1',3);
+var helper = require('./ip')
+var data = helper.getpackage('10.16.189.1/20', '25/1/2016', 2, 'test')
+var model = require('../model/ip')
 
-for (let index in use) {
-  console.log(use[index]);
-}
+ var use = helper.getIp('10.12.6.1', '10.1.3.1',2);
+
+ for (let index in use) {
+ console.log(use[index]);
+ }

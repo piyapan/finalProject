@@ -205,16 +205,16 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Type Custommer</label>
-                    <select class="form-control select2" style="width: 100%;"  ng-model="data.number">
+                    <select class="form-control select2" style="width: 100%;"  ng-model="data.c_type">
                        <option value="">---Please select---</option>
-                      <option ng-repeat=" item in type" value="{{item.key}}">{{item.name}}</option>
+                      <option ng-repeat=" item in type" value="{{item.tc_id}}">{{item.tc_name}}</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name Customer</label>
-                    <input type="text" class="form-control"  placeholder="name" ng-model="data.name">
+                    <input type="text" class="form-control"  placeholder="name" ng-model="data.c_name">
                   </div>
                 </div>
 
@@ -248,10 +248,10 @@
                     <th>Type</th>
 
                   </tr>
-                  <tr ng-repeat="item in temp">
-                    <td>{{$index+1}}</td>
-                    <td>{{item.name}}</td>
-                    <td>{{item.type.name}}</td>
+                  <tr ng-repeat="item in temp" ng-if="$index > 0">
+                    <td>{{$index}}</td>
+                    <td>{{item.c_name}}</td>
+                    <td>{{item.tc_name}}</td>
                   </tr>
                 </table>
               </div>

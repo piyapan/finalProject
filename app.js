@@ -7,12 +7,16 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var customer = require('./routes/setting/customer');
+var config = require('./routes/config');
+var ip = require('./routes/ip');
+var helpdesk = require('./routes/helpdesk');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -21,9 +25,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.engine('html', require('ejs').renderFile);
 app.use('/', routes);
+app.use('/setting/customer/',customer);
+app.use('/ip',ip);
+app.use('/config',config);
 app.use('/users', users);
+app.use('/helpdesk/',helpdesk);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,10 +47,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    res.send('error status 500'+err.message);
   });
 }
 
@@ -50,10 +55,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  res.send('error '+ err.message);
 });
 
 
