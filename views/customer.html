@@ -188,6 +188,7 @@
     <section class="content" >
 
       <!-- SELECT2 EXAMPLE -->
+
       <div class="row"  ng-controller="CustomerFromController">
         <div class="col-md-6">
           <div class="box box-default " >
@@ -272,6 +273,7 @@
         </div>
 
       </div>
+
       <div class="row"  ng-controller="StateController">
         <div class="col-md-6">
 
@@ -322,10 +324,8 @@
                 </tr>
                 <tr ng-repeat="item in temp">
                   <td>{{$index+1}}</td>
-                  <td>{{item.name}}</td>
-
-                  </td>
-                  <td style="background-color:{{item.color}};"></td>
+                  <td>{{item.cs_name}}</td>
+                  <td style="background-color:{{item.cs_color}};"></td>
                 </tr>
 
               </table>
@@ -345,7 +345,87 @@
         </div>
       </div>
 
-
+      <div class="row" ng-controller="Router">
+        <div class="modal fade" id="edite_router" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">Chang router</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                      .<div class="form-group">
+                        <label for="">router</label>
+                        <input type="text" class="form-control" id="" ng-model="temp.rt_name">
+                      </div>
+                      <div class="form-group">
+                        <label>status</label>
+                        <select class="form-control select2" style="width: 100%;"  ng-model="temp.rt_st">
+                           <option value="2">ยังไม่ใช้งาน</option>
+                           <option value="1">ใช้งานแล้ว</option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="temp = null">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box box-default">
+            <div class="box">
+              <div class="box-header with-border">
+                <h3 class="box-title">Router</h3>
+                <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name Router</label>
+                    <input type="text" class="form-control"  placeholder="router name" ng-model="data.rt_name">
+                  </div>
+                </div>
+              </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default" ng-click="data.rt_name = null">Reset</button>
+                <button type="submit" class="btn btn-info pull-right" ng-click="add()" >Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">List Router</h3>
+            </div>
+            <div class="box-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in list" >
+                    <td>{{item.rt_name}}</td>
+                    <td ><button type="submit" ng-class="(item.rt_st == 2) ? 'btn btn-success':'btn btn-danger'" ng-click="edite($index)">{{item.st_name}}</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -587,6 +667,7 @@
 <script src="/js/setting.js" charset="utf-8"></script>
 <script src="/js/controller/customer.js" charset="utf-8"></script>
 <script src="/js/controller/state.js" charset="utf-8"></script>
+<script src="/js/controller/router.js" charset="utf-8"></script>
 <!-- Page script -->
 <script>
   $(function () {

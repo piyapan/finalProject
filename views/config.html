@@ -70,7 +70,7 @@
     }
   </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" ng-app="config" ng-controller="controllerConfig">
 <div class="wrapper">
 
   <header class="main-header">
@@ -170,7 +170,7 @@
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
           <a href="/setting/customer">
-            <i class="fa fa-edit"></i> <span>จัดการข้อมูลพื้นฐาน</span>
+            <i class="fa fa-edit"></i> <span>จัดการข้อมูลพื้นฐาน </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -287,19 +287,16 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Status</label>
-                  <select class="form-control select2" style="width: 100%;"  id="typeModal" onchange="setcustomerModal()">
-                     <option value="">---Please select---</option>
-                    <option value="1">พร้อมใช้งาน</option>
-                    <option value="2">ยกเลิก</option>
-                    <option value="3">ใช้งานแล้ว</option>
+                  <select class="form-control select2" style="width: 100%;"  id="typeModal" ng-model="idStatus">
+                    <option ng-repeat="list in status" value="{{list.cs_id}}">{{list.cs_name}}</option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary">Comment</button>
+           <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="idStatus = null">Close</button>
+           <button type="button" class="btn btn-primary"  data-dismiss="modal" ng-click="update()">Save</button>
          </div>
        </div>
       </div>
@@ -311,44 +308,48 @@
       <div class="col-md-11">
         <!-- Custom Tabs (Pulled to the right) -->
         <div class="nav-tabs-custom">
-          <ul class="nav nav-tabs pull-right">
-            <li class="active"><a href="#airr" data-toggle="tab">Airr 300</a></li>
-            <li><a href="#cisco" data-toggle="tab">Cisco</a></li>
+          <ul class="nav nav-tabs pull-right" >
+            <li ng-repeat="list in router">
+              <a href="#cisco" data-toggle="tab" ng-if="list.rt_id == 11" ng-click="getItem(list.rt_id, $index)" >{{list.rt_name}}</a>
+              <a href="#air300" data-toggle="tab" ng-if="list.rt_id == 12" ng-click="getItem(list.rt_id, $index)" > {{list.rt_name}}</a>
+              <a href="#simple" data-toggle="tab" ng-if="list.rt_id > 12" ng-click="OtherItem(list.rt_id, $index)" > {{list.rt_name}}</a>
+            </li>
+
 
             </li>
             <li class="pull-left header"><i class="fa fa-th"></i> Config Router</li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane active" id="airr">
+            <div class="tab-pane " id="air300">
               <section class="content">
                   <div class="box box-default">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Airr 300</h3>
+                      <h3 class="box-title">{{pack.rt_name}}</h3>
                     </div>
                     <div class="box-body">
                       <div class="row">
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">CID</label>
-                            <input type="text" class="form-control" id="CID" placeholder="CID">
+                            <input type="text" class="form-control" id="CID" placeholder="CID" ng-model="air.ar_cid">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">ATM</label>
-                            <input type="text" class="form-control" id="ATM" placeholder="ATM">
+                            <input type="text" class="form-control" id="ATM" placeholder="ATM" ng-model="air.ar_atm">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">IP WAN/IP GPRS</label>
-                            <input type="text" class="form-control" id="IP" placeholder="IP WAN/IP GPRS">
+                            <input type="text" class="form-control" id="IP" placeholder="IP WAN/IP GPRS"ng-model="air.ar_ip">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">SIM-AIS</label>
-                            <input type="text" class="form-control" id="AIS" placeholder="SIM AIS">
+                            <input type="text" class="form-control" id="AIS" placeholder="SIM AIS"ng-model="air.ar_simais">
                           </div>
                         </div>
                       </div>
@@ -356,21 +357,21 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label for="">GRE TUNNEL AIS</label>
-                            <input type="text" class="form-control" id="TUNNEL-AIS" placeholder="GRE TUNNEL AIS">
+                            <input type="text" class="form-control" id="TUNNEL-AIS" placeholder="GRE TUNNEL AIS" ng-model="air.ar_tnais">
                           </div>
                         </div>
                          <div class="col-md-3">
                             <div class="form-group">
                               <label for="">SIM-DTAC</label>
-                              <input type="text" class="form-control" id="DTAC" placeholder="SIM DTAC">
+                              <input type="text" class="form-control" id="DTAC" placeholder="SIM DTAC" ng-model="air.ar_simdtac">
                             </div>
                           </div>  <div class="col-md-3">
                               <div class="form-group">
                                 <label for="">GRE TUNNEL DTAC</label>
-                                <input type="text" class="form-control" id="TUNNEL-DTAC" placeholder="GRE TUNNEL DTAC">
+                                <input type="text" class="form-control" id="TUNNEL-DTAC" placeholder="GRE TUNNEL DTAC" ng-model="air.ar_tndtacl">
                               </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="display:none">
                                 <div class="form-group">
                                   <label for="">COMMENT</label>
                                   <input type="text" class="form-control" id="COMMENT" placeholder="COMMENT">
@@ -380,7 +381,7 @@
                     </div>
                     <div class="box-footer">
                       <button type="submit" class="btn btn-default">Cancel</button>
-                      <button type="submit" class="btn pull-right btn-success">Add Airr 300</button>
+                      <button type="submit" class="btn pull-right btn-success" ng-click="base(pack.rt_id, air)">Add {{pack.rt_name}}</button>
                     </div>
                   </div>
                   <div class="row">
@@ -398,10 +399,8 @@
                           </div>
                         </div>
                         <div class="box-body no-padding">
-                          <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"><i class="fa fa-circle-o" style="color:#ba1125;"></i> ยกเลิก</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o" style="color:#0d8c19;"></i> พร้อมใช้งาน</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o" style="color:#d1b315;"></i> ใข้งานแล้ว</a></li>
+                          <ul class="nav nav-pills nav-stacked" ng-repeat="crack in status">
+                            <li><a href="#"><i class="fa fa-circle-o" style="color:{{crack.cs_color}};"></i> {{crack.cs_name}}</a></li>
                           </ul>
                         </div>
                         <!-- /.box-body -->
@@ -413,7 +412,7 @@
 
                       <div class="box">
                         <div class="box-header">
-                          <h3 class="box-title">List Config Airr300</h3>
+                          <h3 class="box-title">List Config {{pack.rt_name}}</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -433,79 +432,23 @@
 
                             </tr>
                             </thead>
-                           <tbody>
-                             <tr>
-                               <td>581589</td>
-                               <td>K12450</td>
-                               <td>10.90.38.209</td>
-                               <td>0614202914</td>
-                               <td>2.2.22.2</td>
-                               <td>0627877870</td>
-                               <td>1.1.22.2</td>
-                               <td>23/5/59</td>
-                               <td>
-                                 <span class="badge " style="padding-left: 10px; margin-left:10px; background-color:#0d8c19;" onclick="AirrChangModal()">เปลี่ยน</span>
-                               </td>
-
-                               <td onclick="AirrComment()">OnComment</td>
-                             </tr>
-                             <tr>
-                               <td>581592</td>
-                               <td>K12451</td>
-                               <td>10.90.38.217</td>
-                               <td>0614211008</td>
-                               <td>2.2.22.6</td>
-                               <td>0627785917</td>
-                               <td>1.1.22.6</td>
-                               <td>23/5/59</td>
-                               <td>
-                                 <span class="badge" onclick="AirrChangModal()"  style="padding-left: 10px; margin-left:10px; background-color:#d1b315;">เปลี่ยน</span>
-                               </td>
-                               <td onclick="AirrComment()">OnComment</td>
-                             </tr>
-                             <tr>
-                               <td>581605</td>
-                               <td>K12456</td>
-                               <td>10.90.39.17</td>
-                               <td>0614212864</td>
-                               <td>2.2.22.26</td>
-                               <td>0627871099</td>
-                               <td>1.1.22.26</td>
-                               <td>23/5/59</td>
-                               <td>
-                                 <span class="badge" style="padding-left: 10px; margin-left:10px; background-color:#d1b315;"onclick="AirrChangModal()">เปลี่ยน</span>
-                               </td>
-                               <td onclick="AirrComment()">OnComment</td>
-                             </tr>
-                             <tr>
-                               <td>583984</td>
-                               <td>K12600</td>
-                               <td>10.90.43.145</td>
-                               <td>0632281275</td>
-                               <td>2.2.27.198</td>
-                               <td>0627877094</td>
-                               <td>1.1.27.198</td>
-                               <td>23/5/59</td>
-                               <td>
-                                 <span class="badge" style="padding-left: 10px; margin-left:10px; background-color:#ba1125;" onclick="AirrChangModal()">เปลี่ยน</span>
+                            <tbody>
+                              <tr ng-repeat="item in temp">
+                                <td>{{item.ar_cid}}</td>
+                                <td>{{item.ar_atm}}</td>
+                                <td>{{item.ar_ip}}</td>
+                                <td>{{item.ar_simais}}</td>
+                                <td>{{item.ar_tnais}}</td>
+                                <td>{{item.ar_simdtac}}</td>
+                                <td>{{item.ar_tndtacl}}</td>
+                                <td>{{item.ar_time}}</td>
+                                <td>
+                                  <span class="badge " style="padding-left: 10px; margin-left:10px; background-color:{{item.cs_color}};" ng-click="chang(item.ar_id, pack.rt_id, $index)">{{item.cs_name}}</span>
                                 </td>
-                               <td onclick="AirrComment()">OnComment</td>
-                             </tr>
+
+                                <td onclick="AirrComment()">OnComment</td>
+                              </tr>
                             </tbody>
-                            <tfoot>
-                            <tr>
-                              <th>CID</th>
-                              <th>ATM</th>
-                              <th>IP WAN/IP GPRS</th>
-                              <th>SIM-AIS</th>
-                              <th>GRE TUNNEL AIS</th>
-                              <th>SIM-DTAC</th>
-                              <th>GRE TUNNEL DTAC</th>
-                              <th>DATE</th>
-                              <th>OPERATION</th>
-                              <th>COMMENT</th>
-                            </tr>
-                            </tfoot>
                           </table>
                         </div>
                         <!-- /.box-body -->
@@ -522,32 +465,32 @@
                 <section class="content">
                     <div class="box box-default">
                       <div class="box-header with-border">
-                        <h3 class="box-title">Cisco</h3>
+                        <h3 class="box-title">{{pack.rt_name}}</h3>
                       </div>
                       <div class="box-body">
                         <div class="row">
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="">CID</label>
-                              <input type="text" class="form-control" id="CID" placeholder="CID">
+                              <input type="text" class="form-control" id="CID" placeholder="CID" ng-model="cisco.ci_cid">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="">ATM</label>
-                              <input type="text" class="form-control" id="ATM" placeholder="ATM">
+                              <input type="text" class="form-control" id="ATM" placeholder="ATM" ng-model="cisco.ci_atm">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="">IP WAN</label>
-                              <input type="text" class="form-control" id="IP" placeholder="IP WAN">
+                              <input type="text" class="form-control" id="IP" placeholder="IP WAN" ng-model="cisco.ci_ip">
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="">IP AIS</label>
-                              <input type="text" class="form-control" id="AIS" placeholder="IP AIS">
+                              <input type="text" class="form-control" id="AIS" placeholder="IP AIS" ng-model="cisco.ci_simais">
                             </div>
                           </div>
                         </div>
@@ -555,31 +498,31 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label for="">GRE Tunnel UIH_AIS</label>
-                              <input type="text" class="form-control" id="UTH-AIS" placeholder="GRE Tunnel UIH_AIS">
+                              <input type="text" class="form-control" id="UTH-AIS" placeholder="GRE Tunnel UIH_AIS" ng-model="cisco.ci_gtais">
                             </div>
                           </div>
                            <div class="col-md-3">
                               <div class="form-group">
                                 <label for="">Tunnel ID</label>
-                                <input type="text" class="form-control" id="Tunnel-ID" placeholder="Tunnel ID">
+                                <input type="text" class="form-control" id="Tunnel-ID" placeholder="Tunnel ID" ng-model="cisco.ci_tid">
                               </div>
                             </div>  <div class="col-md-3">
                                 <div class="form-group">
                                   <label for="">IP DTAC</label>
-                                  <input type="text" class="form-control" id="DTAC" placeholder="IP DTAC">
+                                  <input type="text" class="form-control" id="DTAC" placeholder="IP DTAC" ng-model="cisco.ci_simdtac">
                                 </div>
                               </div>
                               <div class="col-md-3">
                                   <div class="form-group">
                                     <label for="">GRE Tunnel UIH_DTAC</label>
-                                    <input type="text" class="form-control" id="GRE Tunnel UIH_DTAC" placeholder="GRE Tunnel UIH_DTAC">
+                                    <input type="text" class="form-control" id="GRE Tunnel UIH_DTAC" placeholder="GRE Tunnel UIH_DTAC" ng-model="cisco.ci_gtdtac">
                                   </div>
                              </div>
                         </div>
                       </div>
                       <div class="box-footer">
                         <button type="submit" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn pull-right btn-success">Add Cisco</button>
+                        <button type="submit" class="btn pull-right btn-success" ng-click="base(pack.rt_id, cisco)">Add {{pack.rt_name}}</button>
                       </div>
                     </div>
                     <div class="row">
@@ -597,10 +540,8 @@
                             </div>
                           </div>
                           <div class="box-body no-padding">
-                            <ul class="nav nav-pills nav-stacked">
-                              <li><a href="#"><i class="fa fa-circle-o" style="color:#ba1125;"></i> ยกเลิก</a></li>
-                              <li><a href="#"><i class="fa fa-circle-o" style="color:#0d8c19;"></i> พร้อมใช้งาน</a></li>
-                              <li><a href="#"><i class="fa fa-circle-o" style="color:#d1b315;"></i> ใข้งานแล้ว</a></li>
+                            <ul class="nav nav-pills nav-stacked" ng-repeat="crack in status">
+                              <li><a href="#"><i class="fa fa-circle-o" style="color:{{crack.cs_color}};"></i> {{crack.cs_name}}</a></li>
                             </ul>
                           </div>
                           <!-- /.box-body -->
@@ -612,7 +553,7 @@
 
                         <div class="box">
                           <div class="box-header">
-                            <h3 class="box-title">List Config Cisco</h3>
+                            <h3 class="box-title">List Config {{pack.rt_name}}</h3>
                           </div>
                           <!-- /.box-header -->
                           <div class="box-body">
@@ -633,68 +574,22 @@
 
                               </tr>
                               </thead>
-                             <tbody>
-                               <tr>
-                                 <td>585425</td>
-                                 <td>K12594</td>
-                                 <td>10.90.43.97</td>
-                                 <td>10.228.95.176</td>
-                                 <td>2.2.29.253</td>
-                                 <td>12594</td>
-                                 <td>10.5.81.102</td>
-                                 <td>1.1.29.253</td>
-                                 <td>23/5/59</td>
-                                 <td>
-                                   <span class="badge " style="padding-left: 10px; margin-left:10px; background-color:#0d8c19;" onclick="ChangCisco()">เปลี่ยน</span>
-                                 </td>
-
-                                 <td onclick="CommentCisco()">OnComment</td>
-                               </tr>
-                               <tr>
-                                 <td>581616</td>
-                                 <td>K12451</td>
-                                 <td>10.90.38.217</td>
-                                 <td>10.228.95.18</td>
-                                 <td>2.2.22.6</td>
-                                 <td>12462</td>
-                                 <td>10.5.80.18</td>
-                                 <td>1.1.22.49</td>
-                                 <td>23/5/59</td>
-                                 <td>
-                                   <span class="badge" onclick="ChangCisco()"  style="padding-left: 10px; margin-left:10px; background-color:#d1b315;">เปลี่ยน</span>
-                                 </td>
-                                 <td onclick="CommentCisco()">OnComment</td>
-                               </tr>
-                               <tr>
-                                 <td>581605</td>
-                                 <td>K12456</td>
-                                 <td>10.90.39.17</td>
-                                 <td>10.228.95.22</td>
-                                 <td>2.2.22.26</td>
-                                 <td>12466</td>
-                                 <td>10.5.80.22</td>
-                                 <td>1.1.22.65</td>
-                                 <td>23/5/59</td>
-                                 <td>
-                                   <span class="badge" style="padding-left: 10px; margin-left:10px; background-color:#d1b315;"onclick="ChangCisco()">เปลี่ยน</span>
-                                 </td>
-                                 <td onclick="CommentCisco()">OnComment</td>
-                               </tr>
-                               <tr>
-                                 <td>583984</td>
-                                 <td>K12600</td>
-                                 <td>10.90.43.145</td>
-                                 <td>10.228.95.38</td>
-                                 <td>2.2.27.198</td>
-                                 <td>12482</td>
-                                 <td>10.5.80.38</td>
-                                 <td>1.1.27.198</td>
-                                 <td>23/5/59</td>
-                                 <td>
-                                   <span class="badge" style="padding-left: 10px; margin-left:10px; background-color:#ba1125;" onclick="ChangCisco()">เปลี่ยน</span>
+                              <tbody>
+                                <tr ng-repeat="item in temp">
+                                  <td>{{item.ci_cid}}</td>
+                                  <td>{{item.ci_atm}}</td>
+                                  <td>{{item.ci_ip}}</td>
+                                  <td>{{item.ci_simais}}</td>
+                                  <td>{{item.ci_gtais}}</td>
+                                  <td>{{item.ci_tid}}</td>
+                                  <td>{{item.ci_simdtac}}</td>
+                                  <td>{{item.ci_gtdtac}}</td>
+                                  <td>{{item.ci_time}}</td>
+                                  <td>
+                                    <span class="badge"   style="padding-left: 10px; margin-left:10px; background-color:{{item.cs_color}};" ng-click="chang(item.ci_id, pack.rt_id, $index)">{{item.cs_name}}</span>
                                   </td>
-                                 <td onclick="CommentCisco()">OnComment</td>
-                               </tr>
+                                  <td onclick="CommentCisco()">OnComment</td>
+                                </tr>
                               </tbody>
                               <tfoot>
                               <tr>
@@ -723,7 +618,145 @@
               </div>
             </div>
             <!-- /.tab-pane -->
+            <div class="tab-pane " id="simple">
+              <section class="content">
+                  <div class="box box-default">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">{{OtherPaack.rt_name}}</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">CID</label>
+                            <input type="text" class="form-control" id="CID" placeholder="CID" ng-model="simple.ar_cid">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">ATM</label>
+                            <input type="text" class="form-control" id="ATM" placeholder="ATM" ng-model="simple.ar_atm">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">IP WAN/IP GPRS</label>
+                            <input type="text" class="form-control" id="IP" placeholder="IP WAN/IP GPRS" ng-model="simple.ar_ip">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">SIM-AIS</label>
+                            <input type="text" class="form-control" id="AIS" placeholder="SIM AIS" ng-model="simple.ar_simais">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="">GRE TUNNEL AIS</label>
+                            <input type="text" class="form-control" id="TUNNEL-AIS" placeholder="GRE TUNNEL AIS" ng-model="simple.ar_tnais">
+                          </div>
+                        </div>
+                         <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="">SIM-DTAC</label>
+                              <input type="text" class="form-control" id="DTAC" placeholder="SIM DTAC" ng-model="simple.ar_simdtac">
+                            </div>
+                          </div>  <div class="col-md-3">
+                              <div class="form-group">
+                                <label for="">GRE TUNNEL DTAC</label>
+                                <input type="text" class="form-control" id="TUNNEL-DTAC" placeholder="GRE TUNNEL DTAC" ng-model="simple.ar_tndtacl">
+                              </div>
+                            </div>
+                            <div class="col-md-3" style="display:none">
+                                <div class="form-group">
+                                  <label for="">COMMENT</label>
+                                  <input type="text" class="form-control" id="COMMENT" placeholder="COMMENT">
+                                </div>
+                           </div>
+                      </div>
+                    </div>
+                    <div class="box-footer">
+                      <button type="submit" class="btn btn-default">Cancel</button>
+                      <button type="submit" class="btn pull-right btn-success" ng-click="save(OtherPaack.rt_id, simple)">Add {{OtherPaack.rt_name}}</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3" style="margin-left:750px;">
+                      <div class="box box-solid">
+                        <style media="screen">
 
+                        </style>
+                        <div class="box-header with-border" style="background-color:#c29d9d; ">
+                          <h3 class="box-title">Status</h3>
+
+                          <div class="box-tools">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="box-body no-padding">
+                          <ul class="nav nav-pills nav-stacked" ng-repeat="crack in status">
+                            <li><a href="#"><i class="fa fa-circle-o" style="color:{{crack.cs_color}};"></i> {{crack.cs_name}}</a></li>
+                          </ul>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-top:30px;">
+                    <div class="col-xs-12">
+
+                      <div class="box">
+                        <div class="box-header">
+                          <h3 class="box-title">List Config {{OtherPaack.rt_name}}</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                          <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                <th>CID</th>
+                                <th>ATM</th>
+                                <th>IP WAN/IP GPRS</th>
+                                <th>SIM-AIS</th>
+                                <th>GRE TUNNEL AIS</th>
+                                <th>SIM-DTAC</th>
+                                <th>GRE TUNNEL DTAC</th>
+                                <th>DATE</th>
+                                <th>OPERATION</th>
+                                <th>COMMENT</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="item in OtherTemp">
+                                <td>{{item.ar_cid}}</td>
+                                <td>{{item.ar_atm}}</td>
+                                <td>{{item.ar_ip}}</td>
+                                <td>{{item.ar_simais}}</td>
+                                <td>{{item.ar_tnais}}</td>
+                                <td>{{item.ar_simdtac}}</td>
+                                <td>{{item.ar_tndtacl}}</td>
+                                <td>{{item.ar_time}}</td>
+                                <td>
+                                  <span class="badge " style="padding-left: 10px; margin-left:10px; background-color:{{item.cs_color}};" ng-click="chang(item.ar_id, item.ar_rt, $index)">{{item.cs_name}}</span>
+                                </td>
+
+                                <td onclick="AirrComment()">OnComment</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+              </section>
+            </div>
             <!-- /.tab-pane -->
           </div>
           <!-- /.tab-content -->

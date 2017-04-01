@@ -4,7 +4,7 @@ exports.index = function(req, res) {
 var model = require('../model/ip')
 var helper = require('../helper/ip')
 var customer = require('../model/customer')
-exports.savepackage = function(req, res) {
+exports.savepackage = function(req, res,next) {
     var subnet = req.body.ip
     var date = req.body.date
     var sim = req.body.type
@@ -14,6 +14,7 @@ exports.savepackage = function(req, res) {
     console.log(sim)
     console.log(comment)
     var data = helper.getpackage(subnet, date, sim, comment)
+    console.log(data);
     if(data.length < 1) {
         res.status(200).json({
             size: data.length,
@@ -24,6 +25,7 @@ exports.savepackage = function(req, res) {
         model.insert(sim, data, function(err, value) {
             if(err) {
                 console.log(error)
+                next(err)
             } else {
                 console.log(value)
             }

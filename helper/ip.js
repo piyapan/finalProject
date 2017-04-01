@@ -5,10 +5,12 @@ exports.getpackage = function (subnet, date, sim, comment) {
 	let first = block.first
 	let last = block.last
 	let packageIp = []
-	var start = first.substring(first.indexOf('.', 4) + 1, first.indexOf('.', 6))
-	var stop = last.substring(last.indexOf('.', 4) + 1, last.indexOf('.', 6))
-	var temp = {}
+	var start = pearWanIP(first)
+	var stop = pearWanIP(last)
 
+	var temp = {}
+console.log(start);
+console.log(stop);
 	if (sim == 1) {
 		for (var i = Number(start); i <= Number(stop); i++) {
 			packageIp.push({
@@ -53,4 +55,7 @@ function subip(ip) {
 	}
 
 	return temp
+}
+function pearWanIP(ip){
+    return ip.substring(ip.indexOf('.',4)+1,ip.lastIndexOf('.'));
 }
