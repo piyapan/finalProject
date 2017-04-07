@@ -7,5 +7,6 @@ router.get('/',helpdesk.index);
 router.get('/getList/:id', helpdesk.getIpAddress);
 router.get('/groupIp/:id',helpdesk.getGroupByid);
 router.post('/edite',helpdesk.UpdateList);
+router.post('/compear',helpdesk.checkcompear);
 
 module.exports = router;

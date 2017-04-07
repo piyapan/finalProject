@@ -1,15 +1,8 @@
-let model = require('../model/index')
-model.getALlUse(function (err, value) {
-  if (err == null) {
-    console.log(value)
+let model = require('../model/member')
+model.useMember({mem_username:'admidn', mem_password:'password56'},function (err, value) {
+  if (err) {
+    console.log(err);
   } else {
-    console.log(err)
-  }
-})
-model.getAllReset(function (err, value) {
-  if (err == null) {
-    console.log(value)
-  } else {
-    console.log(err)
+    console.log(value.length);
   }
 })

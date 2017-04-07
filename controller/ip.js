@@ -1,5 +1,10 @@
 exports.index = function(req, res) {
-    res.render('ip')
+  if (req.session.username) {
+      res.render('ip')
+  } else {
+    res.redirect('/');
+  }
+
 }
 var model = require('../model/ip')
 var helper = require('../helper/ip')
@@ -9,10 +14,6 @@ exports.savepackage = function(req, res,next) {
     var date = req.body.date
     var sim = req.body.type
     var comment = req.body.comment
-    console.log(subnet)
-    console.log(date)
-    console.log(sim)
-    console.log(comment)
     var data = helper.getpackage(subnet, date, sim, comment)
     console.log(data);
     if(data.length < 1) {

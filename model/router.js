@@ -39,3 +39,12 @@ exports.insertconfigStatus = function (data, cb) {
 exports.getAllconfigStatus = function (cb) {
   model.query('select * from configStatus', cb)
 }
+exports.delete = function (id, cb) {
+  model.query('delete from router where rt_id = ?', id, cb)
+};
+exports.updateconfigStatus = function (data,cb) {
+  model.query('update configStatus set cs_name = ?, cs_color = ? where cs_id = ?',[data.cs_name, data.cs_color, data.cs_id],cb)
+};
+exports.deleteconfigStatus = function (id, cb) {
+  model.query('delete from configStatus where cs_id = ?', id, cb)
+};

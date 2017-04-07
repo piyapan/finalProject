@@ -21,27 +21,33 @@ app.controller('helpController', ['$scope','$http', function ($scope, $http) {
       changIP();
     }
     $scope.check = function(){
-      $scope.alert_ais = $scope.list.find((item) => {
-        if (item.Ia_ais == $scope.packages.data.Ia_ais) {
-          return true;
-        }else {
-          return false;
-        }
-      })
-      $scope.alert_dtac = $scope.list.find((item) => {
-        if (item.Ia_dtac == $scope.packages.data.Ia_dtac) {
-          return true;
-        }else {
-          return false;
-        }
-      })
+
     }
     $scope.save = function(){
-      console.log($scope.packages.data);
-      $http.post('/helpdesk/edite',$scope.packages.data).then(value => {
-        console.log(value);
+
+      $http.post('/helpdesk/compear',$scope.packages.data).then(value => {
+        console.log(value.data[0]['number']);
+          if (value.data[0]['number'] >1) {
+
+            $scope.alert_ais = true
+            $scope.alert_dtac = true
+
+          } else {
+            $scope.alert_ais = false
+            $scope.alert_dtac = false
+            console.log($scope.packages.data);
+            $http.post('/helpdesk/edite',$scope.packages.data).then(value => {
+              close()
+            },error=>{
+              alert('server error update');
+            })
+            close();
+          }
       },error=>{
-        console.log(error);
+        alert('server compear error');
       })
     }
 }])
+function close(){
+  $("#use").modal('hide')
+}

@@ -1,6 +1,7 @@
 var app = angular.module('ip', [])
 
 app.controller('ipController', ['$scope', '$http', function ($scope, $http) {
+  $scope.state = true
   $scope.type = [{tc_id:1, tc_name:'BANK'}, {tc_id:2, tc_name:'NONE BANK'}];
   $scope.listCustomer;
   $scope.getCustomer = function(id){
@@ -49,19 +50,28 @@ app.controller('ipController', ['$scope', '$http', function ($scope, $http) {
       console.log(error);
     });
   }
+  $scope.check = false
   $scope.aisCl = function (dal) {
-    var ValDate = document.getElementById('ipais')
-    dal.date = ValDate.value
-    dal.type = 1
-    $scope.ais = null
-    ValDate.value = null
-    saveIp(dal, function (err, value) {
-      if (err == null) {
-        location.reload();
-      } else {
-        alert('server error ')
-      }
-    })
+
+    if (checkip(dal.ip)) {
+      $scope.check = false
+      var ValDate = document.getElementById('ipais')
+      dal.date = ValDate.value
+      dal.type = 1
+      $scope.ais = null
+      ValDate.value = null
+      saveIp(dal, function (err, value) {
+        if (err == null) {
+          location.reload();
+        } else {
+          alert('server error ')
+        }
+      })
+
+    } else {
+      $scope.check = true;
+    }
+
   }
 
   $scope.addPackageAis =(index)=>{
@@ -87,24 +97,31 @@ app.controller('ipController', ['$scope', '$http', function ($scope, $http) {
 
 
   })
-
+  $scope.check_d = false
   $scope.dtacCl = function (dal) {
-    var ValDate = document.getElementById('ipdtac')
-    dal.date = ValDate.value
-    dal.type = 2
-    ValDate.value = null
-    $scope.dtac = null
+    if (checkip(dal.ip)) {
+      $scope.check_d = false
 
-    saveIp(dal, function (err, value) {
-      if (err == null) {
+      var ValDate = document.getElementById('ipdtac')
+      dal.date = ValDate.value
+      dal.type = 2
+      ValDate.value = null
+      $scope.dtac = null
 
-            location.reload();
-      
+      saveIp(dal, function (err, value) {
+        if (err == null) {
 
-      } else {
-        alert('server error')
-      }
-    })
+              location.reload();
+
+
+        } else {
+          alert('server error')
+        }
+      })
+    } else {
+      $scope.check_d = true
+    }
+
   }
   function saveIp (data, cb) {
     $http.post('/ip/save', data).then(function (value) {

@@ -1,9 +1,25 @@
 let helpdesk = require('../model/helpdesk');
 exports.index = function (req, res) {
-  helpdesk.getNameUseCustomer(function (err, value) {
-      res.render('helpdesk',{use:value});
-  })
+  if (req.session.username) {
+    helpdesk.getNameUseCustomer(function (err, value) {
+        res.render('helpdesk',{use:value});
+    })
+  } else {
+    res.redirect('/');
+  }
 
+
+};
+exports.checkcompear = function (req, res) {
+  helpdesk.compear(req.body,function (err, value) {
+    if (err) {
+      res.status(404)
+      res.send(err)
+    } else {
+      res.status(200)
+      res.json(value)
+    }
+  })
 };
 exports.getIpAddress = function (req, res,next) {
   let id = req.params.id;
@@ -47,5 +63,5 @@ let data =   {
     }else {
       res.json(value)
     }
-  }) 
+  })
 };

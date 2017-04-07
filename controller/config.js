@@ -1,7 +1,12 @@
 let customer = require('../model/customer')
 let config = require('../model/config')
 exports.index = function (req, res) {
-  res.render('config')
+  if (req.session.username) {
+    res.render('config')
+  } else {
+    res.redirect('/');
+  }
+
 }
 exports.getrouter = function (req, res, next) {
   config.getName(function (err, value) {
@@ -13,6 +18,30 @@ exports.getrouter = function (req, res, next) {
     }
   })
 }
+exports.DeleteCus = function (req,res) {
+  console.log(req.params.id);
+  customer.delete(req.params.id, function (err, value) {
+    if (err) {
+      res.status(404)
+      res.send('content:'+err)
+    } else {
+      res.status(200)
+      res.json(value)
+    }
+  })
+};
+exports.EditCustomer = function (req, res) {
+  let data = req.body;
+  customer.update(data, function (err, value) {
+    if (err) {
+      res.status(404)
+      res.send('content:'+err)
+    } else {
+      res.status(200)
+      res.json(value)
+    }
+  })
+};
 exports.edite = function (req, res, next) {
   config.changStatus(req.body, function (err, value) {
     if (err) {

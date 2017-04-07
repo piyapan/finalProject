@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require('express-session')
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var customer = require('./routes/setting/customer');
@@ -13,7 +13,16 @@ var ip = require('./routes/ip');
 var helpdesk = require('./routes/helpdesk');
 
 var app = express();
+var sess = {
+  secret: 'PINA#3995dseiw/e3d',
+  cookie: {}
+}
 
+app.use(session({
+  secret: 'PINA#3995dseiw/e3d',
+  resave: false,
+  saveUninitialized: true
+}))
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -47,16 +56,23 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.send('error status 500'+err.message);
+    let str = '<a href="/"> login now</a>';
+    res.send('error status 500 :'+err.message+'<br>'+str);
   });
+}
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
+
   res.send('error '+ err.message);
 });
+
 
 
 module.exports = app;
